@@ -29,6 +29,12 @@ public:
     void ItrInorder(TreeNode<T> *t);
     void ItrPostorder(TreeNode<T> *t);
     void LeverOrder(TreeNode<T> *t);
+    int TotalNodes(TreeNode<T> *t);
+    int LeafNodes(TreeNode<T> *t);
+    int NonLeafNodes(TreeNode<T> *t);
+    int LeftChildNodes(TreeNode<T> *t);
+    int RightChildNodes(TreeNode<T> *t);
+    int height(TreeNode<T> *t);
 };
 template <class T>
 Tree<T>::Tree(){
@@ -48,7 +54,7 @@ void Tree<T>::Create(){
     {
         p=q.top();
         q.pop();
-        cout<<"Enter the value of left child node:";
+        cout<<"Enter the value of left child of "<<p->val<<" node:";
         cin>>val;
         if(val!=-1)
         {
@@ -59,7 +65,7 @@ void Tree<T>::Create(){
             q.push(t);
             p->left=t;
         }
-        cout<<"Enter the value of Right child node:";
+        cout<<"Enter the value of Right child "<<p->val<<" node:";
         cin>>val;
         if(val!=-1)
         {
@@ -137,33 +143,6 @@ void Tree<T>::ItrInorder(TreeNode<T> *t)
         }
     }
 }
-//template <class T>
-//void Tree<T>::ItrPostorder(TreeNode<T> *t)
-//{
-//    Stack<TreeNode<T>*>s;
-//    long int temp;
-//    while(t!=NULL||!s.empty())
-//    {
-//        if(t!=NULL)
-//        {
-//            s.push(t);
-//            t=t->left;
-//        }
-//        else{
-//            temp=(long int)s.top();
-//            s.pop();
-//            if(temp>0)
-//            {
-//                s.push((TreeNode<T>*)temp);
-//                t=((TreeNode<T> *)temp)->right;
-//            }
-//            else{
-//                cout<<t->val;
-//                t=s.pop();
-//            }
-//        }
-//    }
-//}
 template <class T>
 void Tree<T>::LeverOrder(TreeNode<T> *t)
 {
@@ -187,14 +166,110 @@ void Tree<T>::LeverOrder(TreeNode<T> *t)
     }
 }
 template <class T>
-int count(TreeNode<T> *t){
-    
+int Tree<T>::TotalNodes(TreeNode<T> *t){
+    int x,y;
+    if(t)
+    {
+        x=count(t->left);
+        y=count(t->right);
+        return x+y+1;
+    }
+    return 0;
+}
+template <class T>
+int Tree<T>::LeafNodes(TreeNode<T> *t){
+    int x,y;
+    if(t)
+    {
+        x=LeafNodes(t->left);
+        y=LeafNodes(t->right);
+        if(!t->left&&!t->right)
+        {
+            return x+y+1;
+        }
+        else{
+            return x+y;
+        }
+    }
+    return 0;
+}
+template <class T>
+int Tree<T>::NonLeafNodes(TreeNode<T> *t){
+    int x,y;
+    if(t)
+    {
+        x=NonLeafNodes(t->left);
+        y=NonLeafNodes(t->right);
+        if(t->left&&t->right)
+        {
+            return x+y+1;
+        }
+        else{
+            return x+y;
+        }
+    }
+    return 0;
+}
+template <class T>
+int Tree<T>::LeftChildNodes(TreeNode<T> *t){
+    int x,y;
+    if(t)
+    {
+        x=LeftChildNodes(t->left);
+        y=LeftChildNodes(t->right);
+        if(t->left&&!t->right)
+        {
+            return x+y+1;
+        }
+        else{
+            return x+y;
+        }
+    }
+    return 0;
+}
+template <class T>
+int Tree<T>::RightChildNodes(TreeNode<T> *t){
+    int x,y;
+    if(t)
+    {
+        x=RightChildNodes(t->left);
+        y=RightChildNodes(t->right);
+        if(t->right&&!t->left)
+        {
+            return x+y+1;
+        }
+        else{
+            return x+y;
+        }
+    }
+    return 0;
+}
+template <class T>
+int Tree<T>::height(TreeNode<T> *t){
+    int x,y;
+    if(t)
+    {
+        x=height(t->left);
+        y=height(t->right);
+        if(x>y)
+        {
+            return x+1;
+        }
+        else{
+            return y+1;
+        }
+    }
+    return 0;
 }
 int main(int argc, const char * argv[]) {
     Tree<int> t;
     t.Create();
     t.LeverOrder(t.root);
-    t.Preorder(t.root);
+//    cout<<endl<<t.LeafNodes(t.root);
+//    cout<<endl<<t.NonLeafNodes(t.root);
+//    cout<<endl<<t.LeftChildNodes(t.root);
+//    cout<<endl<<t.RightChildNodes(t.root);
+    cout<<endl<<t.height(t.root);
 //    cout<<endl;
 //    t.ItrPreorder(t.root);
 //    cout<<endl;
